@@ -1,10 +1,44 @@
 let imgElement = document.getElementById('preview');
 let inputElement = document.getElementById('camera');
+let uploadArea = document.getElementById('upload-area');
+let nomeArquivo = document.getElementById('nome-arquivo');
 
+// Carrega matérias do arquivo materias.js ao iniciar
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof carregarMaterias === "function") carregarMaterias();
+});
+
+// Seleção via input file (câmera ou galeria)
 inputElement.onchange = function () {
   let file = inputElement.files[0];
-  imgElement.src = URL.createObjectURL(file);
+  if (file) carregarImagem(file);
 };
+
+// Drag and drop sobre a área de upload
+uploadArea.addEventListener('dragover', function (e) {
+  e.preventDefault();
+  uploadArea.classList.add('drag-over');
+});
+
+uploadArea.addEventListener('dragleave', function () {
+  uploadArea.classList.remove('drag-over');
+});
+
+uploadArea.addEventListener('drop', function (e) {
+  e.preventDefault();
+  uploadArea.classList.remove('drag-over');
+  let file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    carregarImagem(file);
+  } else {
+    document.getElementById('status').innerText = '❌ Arquivo inválido. Envie uma imagem.';
+  }
+});
+
+function carregarImagem(file) {
+  imgElement.src = URL.createObjectURL(file);
+  nomeArquivo.innerText = '✅ ' + file.name;
+}
 
 // =========================
 // MATÉRIAS

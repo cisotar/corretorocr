@@ -19,10 +19,19 @@
       font-size: 16px;
     }
 
-    input, button {
+    input[type="number"],
+    input[type="text"],
+    input[placeholder] {
       padding: 10px;
       margin: 5px;
       font-size: 14px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 14px;
+      cursor: pointer;
     }
 
     #preview, canvas {
@@ -40,10 +49,78 @@
       white-space: pre-line;
       font-weight: bold;
       margin-top: 10px;
+      text-align: left;
+      display: inline-block;
+      max-width: 500px;
+      width: 90%;
     }
 
     .materia {
       margin-bottom: 10px;
+    }
+
+    /* Área de upload de foto */
+    #upload-area {
+      border: 2px dashed #aaa;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 10px auto;
+      max-width: 400px;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    #upload-area:hover,
+    #upload-area.drag-over {
+      border-color: #4a90e2;
+      background: #eef4fd;
+    }
+
+    #upload-area p {
+      margin: 8px 0;
+      color: #555;
+      font-size: 14px;
+    }
+
+    #upload-area .icone {
+      font-size: 48px;
+    }
+
+    #btn-camera {
+      background: #4a90e2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    #btn-camera:hover {
+      background: #357abd;
+    }
+
+    #btn-processar {
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #btn-processar:hover {
+      background: #1e8449;
+    }
+
+    #nome-arquivo {
+      font-size: 13px;
+      color: #27ae60;
+      margin-top: 4px;
+      min-height: 18px;
     }
   </style>
 </head>
@@ -59,18 +136,29 @@
 <div id="materias"></div>
 <button onclick="addMateria()">+ Adicionar Matéria</button>
 
-<h3>Capturar imagem</h3>
-<input type="file" accept="image/*" capture="environment" id="camera">
+<h3>Enviar foto da folha de respostas</h3>
+
+<!-- Área de arrastar e soltar / clicar para selecionar -->
+<div id="upload-area" onclick="document.getElementById('camera').click()">
+  <div class="icone">📷</div>
+  <p><strong>Clique aqui</strong> para tirar uma foto ou selecionar da galeria</p>
+  <p>ou arraste e solte a imagem aqui</p>
+  <div id="nome-arquivo"></div>
+</div>
+
+<!-- Input oculto: aceita câmera e galeria -->
+<input type="file" accept="image/*" id="camera" style="display:none">
 
 <img id="preview">
 <canvas id="canvas"></canvas>
 
 <br>
-<button onclick="processar()">Processar</button>
+<button id="btn-processar" onclick="processar()">Processar</button>
 
 <div id="status"></div>
 
 <script src="https://docs.opencv.org/4.x/opencv.js"></script>
+<script src="materias.js"></script>
 <script src="app.js"></script>
 
 </body>
